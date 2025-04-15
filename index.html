@@ -6,14 +6,27 @@
   <meta name="theme-color" content="#ffffff">
   <title>孔明六壬時課</title>
   <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style_v3.css">
   <link rel="icon" href="icon.png">
   <script src="https://cdn.jsdelivr.net/npm/solarlunar@2.0.7/lib/solarlunar.min.js"></script>
   <script src="script.js" defer></script>
 </head>
 <body>
   <h1>孔明六壬</h1>
-  <button onclick="calculate()">開始占卜</button>
-  <div class="result" id="result"></div>
+  <div class="hand-container">
+    <img src="hand.png" alt="六壬手訣圖" class="hand-img">
+    <div class="point" id="大安" style="top: 48%; left: 38%;">大<br>安</div>
+    <div class="point" id="留連" style="top: 28%; left: 38%;">留<br>連</div>
+    <div class="point" id="速喜" style="top: 22%; left: 51%;">速<br>喜</div>
+    <div class="point" id="赤口" style="top: 25%; left: 64%;">赤<br>口</div>
+    <div class="point" id="小吉" style="top: 47%; left: 64%;">小<br>吉</div>
+    <div class="point" id="空亡" style="top: 47%; left: 51%;">空<br>亡</div>
+  </div>
+  <br>
+  <br>
+  <br>
+  <button onclick="startDivination()">占卜</button>
+  <br>
+  <div id="result" style="margin-top: 20px; font-size: 1.2em; text-align: center;"></div>
 </body>
 </html>
