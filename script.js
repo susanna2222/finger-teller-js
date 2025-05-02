@@ -19,6 +19,11 @@ function highlight(idx) {
   });
 }
 
+function getShichenIndex(hour) {
+  if (hour === 23 || hour === 0) return 0;
+  return Math.floor((hour - 1) / 2) + 1;
+}
+
 function startDivination() {
   const now = new Date();
   const solar = {
@@ -29,34 +34,44 @@ function startDivination() {
 
   const lunar = solarlunar.solar2lunar(solar.year, solar.month, solar.day);
   const hour = now.getHours();
-  const shichen = shichenArray[Math.floor(hour / 2)];
+  const shichen = getShichenIndex(hour);
   const hour_index = shichenArray.indexOf(shichen);
 
   // ✅ 改用農曆月份與日期
   const idx = (lunar.lMonth + lunar.lDay + hour_index) % 6;
   const totalSteps = 6 * 3 + idx;
 
+  // showing current calculation
+  // const totalSteps = lunar.lMonth + lunar.lDay + hour_index;
+  // const stepDisplay = document.getElementById('step-display');
+
   let count = 0;
   const interval = setInterval(() => {
-    highlight(count % 6);
-    count++;
-    if (count > totalSteps) {
+    if (count <= totalSteps) {
+      highlight(count % 6);
+  
+      // if (count < lunar.lMonth) {
+      //   stepDisplay.textContent = `${count + 1}月`;
+      // } else if (count < lunar.lMonth + lunar.lDay) {
+      //   const dayCount = count - lunar.lMonth + 1;
+      //   stepDisplay.textContent = `${dayCount}日`;
+      // } else {
+      //   const shichenCount = count - lunar.lMonth - lunar.lDay;
+      //   stepDisplay.textContent = `${shichenArray[shichenCount % 12]}時`;
+      // }
+  
+      count++;
+    } else {
       clearInterval(interval);
-
-      // 強制亮正確格子
       highlight(idx);
-
-      // const lunarStr = `農曆：${lunar.lYear}年${lunar.lMonth}月${lunar.lDay}日 ${lunar.gzYear}年（${lunar.animal}年）`;
-      // const fakeDivination = `你現在的時辰為：${shichen}時，占得結果為<h2><b>${liuren}</b></h2>✨<br><br>${explanation}`;
-
-      // document.getElementById('result').innerHTML = `${lunarStr}<br>${fakeDivination}`;
-
+      stepDisplay.textContent = '';
+  
       const resultText = `農曆：${lunar.lMonth}月${lunar.lDay}日（${lunar.gzYear}年）${shichen}時<br>` +
-                         `占得：${liurenArray[idx]} ✨<br>${explanations[liurenArray[idx]]}`;
-
+                         `占得：${liurenArray[idx]} ✨<br>${explanations[liurenArray[idx]]}<br>`;
+  
       document.getElementById('result').innerHTML = resultText;
     }
-  }, 100);
+  }, 200);
 }
 
 // Text only version
