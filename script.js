@@ -1,5 +1,10 @@
 const liurenArray = ['大安', '留連', '速喜', '赤口', '小吉', '空亡'];
 const shichenArray = ['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
+const shichenTimeMap = [
+  '23:00 - 00:59', '01:00 - 02:59', '03:00 - 04:59', '05:00 - 06:59',
+  '07:00 - 08:59', '09:00 - 10:59', '11:00 - 12:59', '13:00 - 14:59',
+  '15:00 - 16:59', '17:00 - 18:59', '19:00 - 20:59', '21:00 - 22:59'
+];
 
 const explanations = {
       '大安': '萬事順利，平安為上，適合安定、結婚、談判等事。',
@@ -10,6 +15,8 @@ const explanations = {
       '空亡': '空虛無果，容易失望、落空，不利行動，宜等待時機。'
     };
 
+const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
 function highlight(idx) {
   liurenArray.forEach((item, i) => {
     const el = document.getElementById(item);
@@ -17,11 +24,6 @@ function highlight(idx) {
       el.classList.toggle('highlight', i === idx);
     }
   });
-}
-
-function getShichenIndex(hour) {
-  if (hour === 23 || hour === 0) return 0;
-  return Math.floor((hour - 1) / 2) + 1;
 }
 
 function startDivination() {
@@ -32,41 +34,44 @@ function startDivination() {
     day: now.getDate()
   };
 
+  function getShichenIndex(hour) {
+    if (hour === 23 || hour === 0) return 0;
+    return Math.floor((hour - 1) / 2) + 1;
+  }
+
+// 強制使用台灣時間（GMT+8）取小時
+function getTaiwanHour() {
+  const now = new Date();
+  const utc = now.getTime() + (now.getTimezoneOffset() * 60000); // UTC 毫秒值
+  const taiwanTime = new Date(utc + (8 * 60 * 60 * 1000));       // 加 8 小時 → GMT+8
+  return taiwanTime.getHours();
+}
+
+  // Time display
+  const localeTimeStr = now.toLocaleString();
+  const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
   const lunar = solarlunar.solar2lunar(solar.year, solar.month, solar.day);
   const hour = now.getHours();
-  const shichen = getShichenIndex(hour);
-  const hour_index = shichenArray.indexOf(shichen);
+  const hour_index = getShichenIndex(hour);
+  const shichen = shichenArray[hour_index];
+  const timeRange = shichenTimeMap[hour_index];
 
   // ✅ 改用農曆月份與日期
   const idx = (lunar.lMonth + lunar.lDay + hour_index) % 6;
   const totalSteps = 6 * 3 + idx;
 
-  // showing current calculation
-  // const totalSteps = lunar.lMonth + lunar.lDay + hour_index;
-  // const stepDisplay = document.getElementById('step-display');
-
   let count = 0;
   const interval = setInterval(() => {
     if (count <= totalSteps) {
       highlight(count % 6);
-  
-      // if (count < lunar.lMonth) {
-      //   stepDisplay.textContent = `${count + 1}月`;
-      // } else if (count < lunar.lMonth + lunar.lDay) {
-      //   const dayCount = count - lunar.lMonth + 1;
-      //   stepDisplay.textContent = `${dayCount}日`;
-      // } else {
-      //   const shichenCount = count - lunar.lMonth - lunar.lDay;
-      //   stepDisplay.textContent = `${shichenArray[shichenCount % 12]}時`;
-      // }
-  
       count++;
     } else {
       clearInterval(interval);
       highlight(idx);
-      stepDisplay.textContent = '';
   
-      const resultText = `農曆：${lunar.lMonth}月${lunar.lDay}日（${lunar.gzYear}年）${shichen}時<br>` +
+      const resultText = `${localeTimeStr}（${timeZone}）<br><br>` +
+                         `農曆：${lunar.lMonth}月${lunar.lDay}日${shichen}時（${timeRange})<br>` +
                          `占得：${liurenArray[idx]} ✨<br>${explanations[liurenArray[idx]]}<br>`;
   
       document.getElementById('result').innerHTML = resultText;
@@ -74,40 +79,6 @@ function startDivination() {
   }, 200);
 }
 
-// Text only version
-function calculate() {
-    const now = new Date();
-    const resultDiv = document.getElementById('result');
-  
-    // 取得農曆資訊
-    const solar = {
-      year: now.getFullYear(),
-      month: now.getMonth() + 1,
-      day: now.getDate()
-    };
-    const lunar = solarlunar.solar2lunar(solar.year, solar.month, solar.day);
-  
-    const lunarStr = `農曆：${lunar.lYear}年${lunar.lMonth}月${lunar.lDay}日 ${lunar.gzYear}年（${lunar.animal}年）`;
-  
-    // 時辰轉換（簡易，之後可接入干支推算）
-    const hour = now.getHours();
-    const shichen = shichenArray[Math.floor(hour / 2)];
-
-    let idx = 0;
-    idx = (idx + lunar.lMonth) % 6;
-    idx = (idx + lunar.lDay) % 6;
-    let hour_index = shichenArray.indexOf(shichen);
-    idx = (idx + hour_index) % 6;
-
-    const liuren = liurenArray[idx];
-
-    const explanation = explanations[liuren];
-
-    const fakeDivination = `你現在的時辰為：${shichen}時，占得結果為<h2><b>${liuren}</b></h2>✨<br><br>${explanation}`;
-  
-    resultDiv.innerHTML = `${lunarStr}<br>${fakeDivination}`;
-}
-  
   // PWA 離線快取：註冊 service worker
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('service-worker.js')
