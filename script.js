@@ -76,7 +76,7 @@ function getTaiwanHour() {
   
       document.getElementById('result').innerHTML = resultText;
     }
-  }, 200);
+  }, 100);
 }
 
   // PWA 離線快取：註冊 service worker
@@ -86,3 +86,7 @@ if ('serviceWorker' in navigator) {
       .catch(err => console.log('❌ Service Worker 註冊失敗:', err));
 }
   
+function toggleInfo() {
+  const box = document.getElementById('infoBox');
+  box.style.display = box.style.display === 'none' ? 'block' : 'none';
+}

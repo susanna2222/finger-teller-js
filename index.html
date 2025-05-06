@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#ffffff">
-  <title>孔明六壬時課</title>
+  <title>掐指一算</title>
   <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="icon.png">
@@ -15,18 +15,37 @@
   <h1>孔明六壬</h1>
   <div class="hand-container">
     <img src="hand.png" alt="六壬手訣圖" class="hand-img">
-    <div class="point" id="大安" style="top: 48%; left: 38%;">大<br>安</div>
-    <div class="point" id="留連" style="top: 28%; left: 38%;">留<br>連</div>
-    <div class="point" id="速喜" style="top: 22%; left: 51%;">速<br>喜</div>
-    <div class="point" id="赤口" style="top: 25%; left: 64%;">赤<br>口</div>
-    <div class="point" id="小吉" style="top: 47%; left: 64%;">小<br>吉</div>
-    <div class="point" id="空亡" style="top: 47%; left: 51%;">空<br>亡</div>
+    <div class="point" id="大安" style="top: 43%; left: 38%;">大<br>安</div>
+    <div class="point" id="留連" style="top: 19%; left: 38%;">留<br>連</div>
+    <div class="point" id="速喜" style="top: 13%; left: 51%;">速<br>喜</div>
+    <div class="point" id="赤口" style="top: 16%; left: 64%;">赤<br>口</div>
+    <div class="point" id="小吉" style="top: 41%; left: 64%;">小<br>吉</div>
+    <div class="point" id="空亡" style="top: 42%; left: 51%;">空<br>亡</div>
+    <!-- <div class="floating-step" id="step-display"></div> -->
   </div>
-  <br>
-  <br>
   <br>
   <button onclick="startDivination()">占卜</button>
   <br>
-  <div id="result" style="margin-top: 20px; font-size: 1.2em; text-align: center;"></div>
+  <div id="result" style="margin-top: 20px; font-size: 1em; text-align: center;"></div>
+
+  <!-- Footer 區塊 -->
+  <footer style="font-size: 0.75rem; color: #666; text-align: center; padding: 1rem 1rem;">
+    <p>
+      本網站提供傳統曆法與占卜內容，純屬文化參考。｜<a href="#" onclick="toggleInfo()">關於本站</a>
+    </p>
+
+    <div id="infoBox" style="display: none; text-align: center; max-width: 60vw; margin: 1rem auto; font-size: 0.75rem; color: #444;">
+      <br>
+      <h4>關於我們</h4>
+      <p>本網站致力於提供簡單、易懂的古代曆法與占卜工具，傳承文化知識與趣味。</p>
+
+      <h4>聯絡方式</h4>
+      <p>如有任何建議或合作邀約， <a href="mailto:liling.chen.tw@gmail.com">請來信</a>。</p>
+
+      <h4>隱私權政策</h4>
+      <p>本網站使用 Google AdSense 廣告服務，廣告提供方可能使用 Cookie 蒐集您在本站的瀏覽資料，用以優化廣告內容。</p>
+      <p>我們不會主動蒐集任何可辨識個人身份的資訊。詳情請參閱 <a href="https://policies.google.com/technologies/ads?hl=zh-TW" target="_blank">Google 廣告政策</a>。</p>
+    </div>
+  </footer>
 </body>
 </html>
