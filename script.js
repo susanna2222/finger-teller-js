@@ -78,27 +78,30 @@ function getTaiwanHour() {
     }
   }, 100);
 
-  //refresh add
+  // 🔁 每次占卜時刷新 Google 廣告
+  const adContainer = document.getElementById("ads-container");
+  if (!adContainer) {
+    console.warn("找不到廣告容器 ads-container");
+    return;
+  }
+
+  const oldAd = document.getElementById("dynamic-ad");
+  if (oldAd) adContainer.removeChild(oldAd);
+
+  const newAd = document.createElement("ins");
+  newAd.className = "adsbygoogle";
+  newAd.id = "dynamic-ad";
+  newAd.style.display = "block";
+  newAd.setAttribute("data-ad-client", "ca-pub-8888513742532503");
+  newAd.setAttribute("data-ad-slot", "1545559490");
+  newAd.setAttribute("data-ad-format", "auto");
+  newAd.setAttribute("data-full-width-responsive", "true");
+
+  adContainer.appendChild(newAd);
   try {
-    const adContainer = document.getElementById("ads-container");
-    const oldAd = document.getElementById("dynamic-ad");
-    if (oldAd) {
-      adContainer.removeChild(oldAd); // 移除舊廣告
-    }
-
-    const newAd = document.createElement("ins");
-    newAd.className = "adsbygoogle";
-    newAd.id = "dynamic-ad";
-    newAd.style.display = "block";
-    newAd.setAttribute("data-ad-client", "ca-pub-8888513742532503");
-    newAd.setAttribute("data-ad-slot", "1545559490");
-    newAd.setAttribute("data-ad-format", "auto");
-    newAd.setAttribute("data-full-width-responsive", "true");
-
-    adContainer.appendChild(newAd);
     (adsbygoogle = window.adsbygoogle || []).push({});
   } catch (e) {
-    console.warn("廣告刷新時發生錯誤：", e);
+    console.warn("廣告刷新錯誤：", e);
   }
 }
 
