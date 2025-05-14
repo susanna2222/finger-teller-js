@@ -77,6 +77,29 @@ function getTaiwanHour() {
       document.getElementById('result').innerHTML = resultText;
     }
   }, 100);
+
+  //refresh add
+  try {
+    const adContainer = document.getElementById("ads-container");
+    const oldAd = document.getElementById("dynamic-ad");
+    if (oldAd) {
+      adContainer.removeChild(oldAd); // 移除舊廣告
+    }
+
+    const newAd = document.createElement("ins");
+    newAd.className = "adsbygoogle";
+    newAd.id = "dynamic-ad";
+    newAd.style.display = "block";
+    newAd.setAttribute("data-ad-client", "ca-pub-8888513742532503");
+    newAd.setAttribute("data-ad-slot", "1545559490");
+    newAd.setAttribute("data-ad-format", "auto");
+    newAd.setAttribute("data-full-width-responsive", "true");
+
+    adContainer.appendChild(newAd);
+    (adsbygoogle = window.adsbygoogle || []).push({});
+  } catch (e) {
+    console.warn("廣告刷新時發生錯誤：", e);
+  }
 }
 
   // PWA 離線快取：註冊 service worker
