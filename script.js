@@ -85,42 +85,24 @@ if ('serviceWorker' in navigator) {
       .then(reg => console.log('✅ Service Worker 註冊成功:', reg))
       .catch(err => console.log('❌ Service Worker 註冊失敗:', err));
 }
-  
-function toggleInfo() {
-  const box = document.getElementById('infoBox');
-  box.style.display = box.style.display === 'none' ? 'block' : 'none';
+
+function toggleVisible(id) {
+  const el = document.getElementById(id);
+  if (el) {
+    el.style.display = (el.style.display === 'none') ? 'block' : 'none';
+  }
 }
 
 function showModal(type) {
   const modal = document.getElementById('modal');
-  const body = document.getElementById('modal-body');
+  const sections = document.querySelectorAll('.modal-section');
 
-  if (type === 'how') {
-    body.innerHTML = `
-      <h3>🔍 如何使用</h3>
-      <p>當心中無端浮起一念——一件想做的事、一個猶豫的選擇——那便是「起念」之時。</p>
-      <p>請在念頭浮現的那一刻占卜，系統將依據當下的農曆與時辰，推演當下吉凶，可作為行事或心念起伏的簡易參考。</p>
-      <br>
-      <p style="color:#aa4444; font-weight: bold;">
-        請不要反覆針對同一個念頭多次占卜，避免情緒糾纏走心。
-      </p>
-    `;
-  } else if (type === 'logic') {
-    body.innerHTML = `
-      <h3>📜 孔明六壬演算法</h3>
-      <p>根據當下的農曆「月」+「日」+ 當下「時辰序位」去對應六壬六課並從大安開始算起：</p>
-      <ul style="padding-left: 1.2em;">
-        <li>大安、留連、速喜、赤口、小吉、空亡</li>
-      </ul>
-      <p>如農曆4月19日未時，從大安開始依序4，19，8的順序</p>
-      <ul style="padding-left: 1.2em;">
-        <li>4 : 1→大安、2→留連、3→速喜、4→赤口</li>
-        <li>19: 1→小吉、2→空亡...</li>
-        <li>8 : 子→空亡、丑→大安...</li>
-      </ul>
-      <p>計算所得的結果即為「大安」。</p>
-    `;
-  }
+  // 先全部隱藏
+  sections.forEach(sec => sec.style.display = 'none');
+
+  // 顯示對應內容
+  const target = document.getElementById(`modal-${type}`);
+  if (target) target.style.display = 'block';
 
   modal.style.display = 'flex';
 }
